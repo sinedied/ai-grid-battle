@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#container {
+    display: flex;
+    width: 80%;
+    height: 80%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#ladder {
+    width: 30%;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+#ladder h2 {
+    margin-top: 0;
+}
+
+#ranking-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#ranking-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#simulation {
+    width: 70%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#simulation h2 {
+    margin-top: 0;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+}
+
+.grid-cell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.grid-cell.obstacle {
+    background-color: #333;
+}
+
+.grid-cell.bot {
+    background-color: #ffcc00;
+}
+
+.grid-cell.claimed {
+    background-color: #00ccff;
+}
+
+@media (max-width: 768px) {
+    #container {
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    #ladder, #simulation {
+        width: 100%;
+        height: 50%;
+    }
+}
