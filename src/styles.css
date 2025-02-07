@@ -96,6 +96,9 @@ body {
 }
 .bot-circle {
     border-radius: 50%;
+    width: 60%;
+    height: 60%;
+    border: 2px solid black;
 }
 
 @media (max-width: 768px) {
