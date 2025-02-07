@@ -15,13 +15,15 @@ type Bot = {
 const GRID_SIZE = 10;
 const OBSTACLE_COUNT = 6;
 const BOT_COUNT = 4;
-const TURN_COUNT = 50;
+const TURN_COUNT = 100;
 const BONUS_POSITION = { x: 5, y: 5 };
 const BONUS_DURATION = 5;
 
 let grid: Cell[][] = [];
 let bots: Bot[] = [];
 let turn = 0;
+let simulationSpeed = 500;
+let simulationInterval: number | undefined;
 
 function initializeGrid() {
     for (let i = 0; i < GRID_SIZE; i++) {
@@ -132,13 +134,60 @@ function updateLadder() {
     }
 }
 
+function renderGrid() {
+    const gridDiv = document.getElementById('grid')!;
+    gridDiv.innerHTML = '';
+    for (let x = 0; x < GRID_SIZE; x++) {
+        for (let y = 0; y < GRID_SIZE; y++) {
+            const cellDiv = document.createElement('div');
+            cellDiv.classList.add('grid-cell');
+            if (grid[x][y].claimedBy !== null) {
+                cellDiv.classList.add(`bot-${grid[x][y].claimedBy}`);
+            }
+            const botHere = bots.find(b => b.x === x && b.y === y);
+            if (botHere) {
+                const botSpan = document.createElement('span');
+                botSpan.classList.add('bot-circle', `bot-${botHere.id}`);
+                cellDiv.appendChild(botSpan);
+            }
+            gridDiv.appendChild(cellDiv);
+        }
+    }
+}
+
 function simulateBattle() {
     initializeGrid();
     initializeBots();
-    for (turn = 0; turn < TURN_COUNT; turn++) {
-        updateGrid();
-        updateLadder();
+    renderGrid();
+    const speedRange = document.getElementById('speedRange');
+    if (speedRange) {
+        speedRange.addEventListener('input', (event) => {
+            const target = event.target as HTMLInputElement;
+            simulationSpeed = parseInt(target.value);
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                startSimulation();
+            }
+        });
     }
+    startSimulation();
+}
+
+function startSimulation() {
+    if (simulationInterval) {
+        clearInterval(simulationInterval);
+    }
+    simulationInterval = setInterval(() => {
+        if (turn < TURN_COUNT) {
+            updateGrid();
+            updateLadder();
+            renderGrid();
+            turn++;
+        } else {
+            clearInterval(simulationInterval);
+            simulationInterval = undefined;
+        }
+    }, simulationSpeed);
 }
 
 simulateBattle();
